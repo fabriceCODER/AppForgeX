@@ -1,0 +1,177 @@
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Logo from "@/components/Logo";
+import { toast } from "@/components/ui/use-toast";
+import Newsletter from "@/components/Newsletter";
+
+const Contact = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      // In a real app, this would be a call to a backend service that handles email
+      // For now, we'll simulate sending an email with a timeout
+      console.log("Sending message to: fabricecoder009@gmail.com");
+      console.log("Message details:", { name, email, subject, message });
+
+      // Simulate network request
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Reset form
+      setName("");
+      setEmail("");
+      setSubject("");
+      setMessage("");
+
+      toast({
+        title: "Message sent!",
+        description: "We'll get back to you as soon as possible.",
+      });
+    } catch (error) {
+      console.error("Error sending message:", error);
+      toast({
+        title: "Error sending message",
+        description: "Please try again later or contact us directly via email.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+      <div className="container mx-auto py-12 px-4">
+        {/* Header Section */}
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 py-4">
+            Contact Us
+          </h1>
+          <p className="text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+            Get in touch with our team to discuss your project or ask any questions
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          {/* Contact Form */}
+          <Card className="border-0 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle className="text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
+                Send us a Message
+              </CardTitle>
+              <CardDescription className="text-slate-600 dark:text-slate-300">
+                Fill out the form below and we'll get back to you as soon as possible
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="firstName">First Name</Label>
+                    <Input id="firstName" placeholder="John" value={name} onChange={(e) => setName(e.target.value)} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="lastName">Last Name</Label>
+                    <Input id="lastName" placeholder="Doe" />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input id="email" type="email" placeholder="john@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="subject">Subject</Label>
+                  <Input id="subject" placeholder="How can we help?" value={subject} onChange={(e) => setSubject(e.target.value)} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="message">Message</Label>
+                  <Textarea id="message" placeholder="Tell us about your project..." className="min-h-[150px]" value={message} onChange={(e) => setMessage(e.target.value)} />
+                </div>
+                <Button
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Sending..." : "Send Message"}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+
+          {/* Contact Information */}
+          <div className="space-y-8">
+            <Card className="border-0 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
+                  Contact Information
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div>
+                  <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Email</h3>
+                  <a href="mailto:contact@appforgex.com" className="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                    contact@appforgex.com
+                  </a>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Watsapp or Phone</h3>
+                  <a href="tel:+1234567890" className="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                    +250 794 500 945
+                  </a>
+                </div>
+                {/* <div>
+                  <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Address</h3>
+                  <address className="text-slate-600 dark:text-slate-300 not-italic">
+                    123 Tech Street<br />
+                    Silicon Valley, CA 94043
+                  </address>
+                </div> */}
+              </CardContent>
+            </Card>
+
+            <Card className="border-0 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
+                  Business Hours
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex justify-between">
+                  <span className="text-slate-600 dark:text-slate-300">Monday - Friday</span>
+                  <span className="text-slate-900 dark:text-slate-100">9:00 AM - 6:00 PM</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-600 dark:text-slate-300">Saturday</span>
+                  <span className="text-slate-900 dark:text-slate-100">10:00 AM - 4:00 PM</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-600 dark:text-slate-300">Sunday</span>
+                  <span className="text-slate-900 dark:text-slate-100">Closed</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+      <Newsletter
+        title="Stay Connected"
+        description="Subscribe to our newsletter to receive updates and stay connected with our team."
+      />
+    </div>
+  );
+};
+
+export default Contact;
