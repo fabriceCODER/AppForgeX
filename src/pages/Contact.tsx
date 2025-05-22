@@ -22,13 +22,24 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      // In a real app, this would be a call to a backend service that handles email
-      // For now, we'll simulate sending an email with a timeout
-      console.log("Sending message to: fabricecoder009@gmail.com");
-      console.log("Message details:", { name, email, subject, message });
+      // Create a hidden iframe
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
 
-      // Simulate network request
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Create the form data
+      const formData = new FormData();
+      formData.append('entry.1234567890', name); // Replace with your Google Form field IDs
+      formData.append('entry.0987654321', email);
+      formData.append('entry.1111111111', subject);
+      formData.append('entry.2222222222', message);
+
+      // Submit the form to Google Forms
+      const response = await fetch('https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse', {
+        method: 'POST',
+        body: formData,
+        mode: 'no-cors'
+      });
 
       // Reset form
       setName("");

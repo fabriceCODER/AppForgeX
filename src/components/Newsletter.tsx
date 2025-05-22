@@ -24,9 +24,21 @@ const Newsletter = ({
           setIsLoading(true);
 
           try {
-               // Here you would typically make an API call to your newsletter service
-               // For now, we'll simulate a successful subscription
-               await new Promise(resolve => setTimeout(resolve, 1000));
+               // Create a hidden iframe
+               const iframe = document.createElement('iframe');
+               iframe.style.display = 'none';
+               document.body.appendChild(iframe);
+
+               // Create the form data
+               const formData = new FormData();
+               formData.append('entry.3333333333', email); // Replace with your Google Form field ID
+
+               // Submit the form to Google Forms
+               const response = await fetch('https://docs.google.com/forms/d/e/YOUR_NEWSLETTER_FORM_ID/formResponse', {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'no-cors'
+               });
 
                toast({
                     title: "Success!",
