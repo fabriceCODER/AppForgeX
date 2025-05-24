@@ -12,6 +12,8 @@ const NavigationLinks = [
   { title: "About", href: "/about" },
   { title: "Services", href: "/services" },
   { title: "Pricing", href: "/pricing" },
+  { title: "Blog", href: "/blog" },
+  { title: "Careers", href: "/careers" },
   { title: "Contact", href: "/contact" },
 ];
 
