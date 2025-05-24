@@ -6,7 +6,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Logo from "@/components/Logo";
 import { toast } from "@/components/ui/use-toast";
 import Newsletter from "@/components/Newsletter";
 
@@ -22,24 +21,44 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      // Create a hidden iframe
+      // Create a hidden form
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = 'https://docs.google.com/forms/d/e/1FAIpQLSfXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/formResponse';
+      form.target = 'hidden-iframe';
+
+      // Create hidden input fields
+      const fields = {
+        'entry.1234567890': name,
+        'entry.0987654321': email,
+        'entry.1111111111': subject,
+        'entry.2222222222': message
+      };
+
+      // Add fields to form
+      Object.entries(fields).forEach(([id, value]) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = id;
+        input.value = value;
+        form.appendChild(input);
+      });
+
+      // Create hidden iframe
       const iframe = document.createElement('iframe');
+      iframe.name = 'hidden-iframe';
       iframe.style.display = 'none';
       document.body.appendChild(iframe);
 
-      // Create the form data
-      const formData = new FormData();
-      formData.append('entry.1234567890', name); // Replace with your Google Form field IDs
-      formData.append('entry.0987654321', email);
-      formData.append('entry.1111111111', subject);
-      formData.append('entry.2222222222', message);
+      // Add form to document and submit
+      document.body.appendChild(form);
+      form.submit();
 
-      // Submit the form to Google Forms
-      const response = await fetch('https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse', {
-        method: 'POST',
-        body: formData,
-        mode: 'no-cors'
-      });
+      // Clean up
+      setTimeout(() => {
+        document.body.removeChild(form);
+        document.body.removeChild(iframe);
+      }, 1000);
 
       // Reset form
       setName("");
@@ -92,24 +111,54 @@ const Contact = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="firstName">First Name</Label>
-                    <Input id="firstName" placeholder="John" value={name} onChange={(e) => setName(e.target.value)} />
+                    <Input
+                      id="firstName"
+                      placeholder="John"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="lastName">Last Name</Label>
-                    <Input id="lastName" placeholder="Doe" />
+                    <Input
+                      id="lastName"
+                      placeholder="Doe"
+                      required
+                    />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" placeholder="john@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="john@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="subject">Subject</Label>
-                  <Input id="subject" placeholder="How can we help?" value={subject} onChange={(e) => setSubject(e.target.value)} />
+                  <Input
+                    id="subject"
+                    placeholder="How can we help?"
+                    value={subject}
+                    onChange={(e) => setSubject(e.target.value)}
+                    required
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="message">Message</Label>
-                  <Textarea id="message" placeholder="Tell us about your project..." className="min-h-[150px]" value={message} onChange={(e) => setMessage(e.target.value)} />
+                  <Textarea
+                    id="message"
+                    placeholder="Tell us about your project..."
+                    className="min-h-[150px]"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    required
+                  />
                 </div>
                 <Button
                   className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
@@ -133,23 +182,16 @@ const Contact = () => {
               <CardContent className="space-y-6">
                 <div>
                   <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Email</h3>
-                  <a href="mailto:contact@appforgex.com" className="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                    contact@appforgex.com
+                  <a href="mailto:fabricecoder009@gmail.com" className="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                    fabricecoder009@gmail.com
                   </a>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Watsapp or Phone</h3>
-                  <a href="tel:+1234567890" className="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                  <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-2">WhatsApp or Phone</h3>
+                  <a href="tel:+250794500945" className="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                     +250 794 500 945
                   </a>
                 </div>
-                {/* <div>
-                  <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Address</h3>
-                  <address className="text-slate-600 dark:text-slate-300 not-italic">
-                    123 Tech Street<br />
-                    Silicon Valley, CA 94043
-                  </address>
-                </div> */}
               </CardContent>
             </Card>
 

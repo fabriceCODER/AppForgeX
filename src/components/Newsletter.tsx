@@ -24,21 +24,34 @@ const Newsletter = ({
           setIsLoading(true);
 
           try {
-               // Create a hidden iframe
+               // Create a hidden form
+               const form = document.createElement('form');
+               form.method = 'POST';
+               form.action = 'https://docs.google.com/forms/d/e/1FAIpQLSfYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY/formResponse';
+               form.target = 'hidden-iframe';
+
+               // Create hidden input field
+               const input = document.createElement('input');
+               input.type = 'hidden';
+               input.name = 'entry.4444444444';
+               input.value = email;
+               form.appendChild(input);
+
+               // Create hidden iframe
                const iframe = document.createElement('iframe');
+               iframe.name = 'hidden-iframe';
                iframe.style.display = 'none';
                document.body.appendChild(iframe);
 
-               // Create the form data
-               const formData = new FormData();
-               formData.append('entry.3333333333', email); // Replace with your Google Form field ID
+               // Add form to document and submit
+               document.body.appendChild(form);
+               form.submit();
 
-               // Submit the form to Google Forms
-               const response = await fetch('https://docs.google.com/forms/d/e/YOUR_NEWSLETTER_FORM_ID/formResponse', {
-                    method: 'POST',
-                    body: formData,
-                    mode: 'no-cors'
-               });
+               // Clean up
+               setTimeout(() => {
+                    document.body.removeChild(form);
+                    document.body.removeChild(iframe);
+               }, 1000);
 
                toast({
                     title: "Success!",
