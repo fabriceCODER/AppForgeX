@@ -69,7 +69,7 @@ const Footer = () => {
                                    <li className="text-slate-600 dark:text-slate-400">
                                         <span className="block">Email:</span>
                                         <a href="mailto:contact@appforgex.com" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                                             contact@appforgex.com
+                                             fabricecoder009@gmail.com
                                         </a>
                                    </li>
                                    <li className="text-slate-600 dark:text-slate-400">
